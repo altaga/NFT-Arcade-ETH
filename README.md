@@ -1,2 +1,232 @@
-# NFT-Arcade-ETH
- NFT-Arcade-ETH Repo
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) [<img src="https://img.shields.io/badge/View-Website-blue">](https://www.nft-arcade.online/) [<img src="https://img.shields.io/badge/View-Video-red">](poner video aqui)
+
+Socials:
+
+falta twitter
+
+
+# NFT-Arcade
+
+<img src="https://i.ibb.co/CJHWhjC/arc3.png" width="400">
+ 
+Welcome to NFT Arcade.
+
+###  NFT-Arcade is an NFT marketplace where streamers, creators and gamers can easily and quickly upload short videos of their best moments and turn them into NFTs.
+
+This is our submission for the Mars Asia Hackathon 2021.
+
+#### Click here to watch our demo video:
+
+[<img src="https://raw.githubusercontent.com/altaga/SCUP-WWAC/master/Images/click-here-button.png" width=200>](aqui va el video)
+
+## To test the product follow this link (Over here Tech judges!):
+<a href="https://www.nft-arcade.online/" target="_blank" style="font-size:30px;">
+https://www.nft-arcade.online/
+ 
+### Use Ropsten TEST net on METAMASK!!!!
+</a>
+<hr>
+ 
+ 
+# Introduction and inspiration
+ 
+NFTs have exploded into the world scene with huge valuations but most of it have been focusing on digital art-work.
+
+It is true that we have huge companies like the NBA with top shots and now even Disney, Tiktok and Instagram ready for the taking of this growing market. Nevertheless there are few instances where there have been real disruptors in this space.
+
+Streaming and Esports have become huge and growing. According to Business Insider, it is expected to grow at a 9% CAGR up from 454 million in 2019 to 646 million in 2023. The esports audience will grow on pace to nearly double over a six-year period, as the 2017 audience stood at 335 million.
+
+<img src="https://res.cloudinary.com/devpost/image/fetch/s--VnMo5uNE--/c_limit,f_auto,fl_lossy,q_auto:eco,w_900/https://cdn.cnn.com/cnnnext/dam/assets/160530101317-esports-global-market-graphic-exlarge-169.jpg" width="600">
+
+Streaming is another monster, in Twitch only Traffic continued to grow, with 1.5 million broadcasters and 100 million monthly viewers in 2015, rising to 2.2 million broadcasters and 15 million daily viewers in 2018. Average concurrent viewers have climbed to over 2 million in 2021, as Twitch saw huge growth during the coronavirus pandemic.
+
+Twitch broadcasters, perhaps most famously Ninja, have featured on the cover of ESPN. Esports tournaments have drawn hundreds of thousands of concurrent viewers, with millions of dollars in prize money funded partly through the huge audience on Twitch.
+
+They have made an estimated $2.3 billion revenue in 2020, primarily from subscriptions and IAP with its more than nine million users and its 18.6 billion hours of content that was consumed on the platform in 2020
+
+<img src="https://i.ibb.co/hZpNsVS/twitch.png" width="800">
+
+This is a huge market that has been overlooked by NFT marketplaces...until now.
+ 
+# Solution
+ 
+Enter NFT Arcade, an NFT marketplace where streamers, creators and gamers can easily and quickly upload short videos of their best moments and turn them into NFTs.
+ 
+Our NFT Arcade page is already operational and ONLINE. It has all the basic functions of any NFT marketplace but of course, based around those gaming moments.
+
+<img src="https://i.ibb.co/rdtWSHD/Screenshot-2021-10-17-214015.png">
+
+To view the NFTs you don't require an account, however in order to increase the offer to buy the NFTs it is necessary to connect a metamask wallet in order to increase the bid for the NFT.
+
+In turn, the NFT and its contract can be viewed on Etherscan.
+
+Or even follow the Content creator directly on their social networks.
+
+<img src="https://i.ibb.co/ZdwQ0Xm/Screenshot-2021-10-17-214052.png">
+
+The most important part of the project is for the creator to be able to upload a video moment of their stream or content and quickly make it into an NFT. 
+
+The plan for the future is to be rolling a lot of activities and contests with the content creators and their fans in order to attract more and more people to the platform.
+
+
+Uploading your NFT is as simple as connecting your metamask account and going through the entire process of uploading the file to NFT.storage and mint which happens on the backend. For now we have a cap of 15 seconds for each video gaming moment.
+
+The process of uploading an NFT is as follows.
+
+First, we must deploy the NFT contract, this contract handles the bids, NFT transfer and mint.
+
+Once the contract is displayed on the ETH network, the form will appear to fill in all the NFT data and upload the file.
+
+<img src="https://i.ibb.co/N3Q2GgQ/Screenshot-2021-10-17-214118.png">
+
+
+We do all the NFT storage on IPFS through the services of NFT.storage, thanks to this
+we can adhere to the NFT standards.
+
+Here is a sample of the metadata of one of our NFTs.
+
+<img src="https://i.ibb.co/L8N92vR/Screenshot-2021-10-17-235619.png">
+
+<img src="https://i.ibb.co/C8qTzvz/Screenshot-2021-10-17-235634.png">
+
+In turn, here is the code that we have running on our server to upload the file from the web page and send it to NFT.Storage through an API.
+
+And as a result, we obtain the metadata that we will use in the mint section of the NFT upload process.
+
+Once we finish configuring the data, we write the price that the NFT will have, and we give it mint.
+
+Once the NFT has been minted, it is ready to be viewed on our platform, where it can be traded.
+
+# What's next
+
+There are Marketplaces for great sports moments created by the NBA and one coming for the NFL, but of course this is heavily centralized and controlled. We can do a similar concept through streaming platforms, gaming and creators with NFT Arcade but of course in a much more decentralized way where the NFT belongs not to a company, but to the people that mint and buy it.
+
+For now this is a PoC of what the final product would be, we will be moving social networks the coming weeks to gauge the market and to see what is best for us to go to market.
+
+Hopefully you liked the project and please support your Arcade, the NFT Arcade.
+
+
+# Team
+[<img src="https://img.shields.io/badge/Luis%20Eduardo-Arevalo%20Oliver-blue">](https://www.linkedin.com/in/luis-eduardo-arevalo-oliver-989703122/)
+
+[<img src="https://img.shields.io/badge/Victor%20Alonso-Altamirano%20Izquierdo-lightgrey">](https://www.linkedin.com/in/alejandro-s%C3%A1nchez-guti%C3%A9rrez-11105a157/)
+
+[<img src="https://img.shields.io/badge/Alejandro-Sanchez%20Gutierrez-red">](https://www.linkedin.com/in/victor-alonso-altamirano-izquierdo-311437137/)
+
+
+# Tech:
+
+## General Diagram:
+The entire application is differentiated into two types of services where the application obtains its data to function.
+
+<img src="https://i.ibb.co/Qj1dMDZ/arcade.png">
+
+
+## Centralized Services (Cloud Services):
+
+- AWS Amplify: CI/CD, Hosting y SSL en AWS.
+- EC2: Server upload the image to NFT.Storage.
+- API Gateway: Secure communication with NodeJS Server (Upload image to NFT.Storage).
+- DynamoDB: user database
+
+## Decentralized Services (Web3.js and communication with Smart Contracts):
+
+- Alchemy:
+	- Obtaining prices of the NFTs in real time.
+- Metamask:
+	- Deployment of the contract on the ETH Network (Ropsten).
+	- NFT Mint.
+	- Sale of NFTs through Interaction with Smart Contract.
+- NFT.Storage:
+ 	- NFT IPFS storage and metadata.json and YES we are storing the videos on IPFS through NFT.storage.
+
+## Frameworks:
+
+- NodeJS: 
+	- NFT.Storage Node package: Backend to upload the image to NFT.Storage.
+	- Express: Handling of server api calls.
+- ReactJS: Creation of the page in frontend.
+- Remix IDE: Creation and compilation of the Smart contract.
+
+
+## Minting Process:
+
+As an important part of the platform, this is the algorithm to upload an NFT to our platform, prowered by NFT.storage
+
+<img src="https://raw.githubusercontent.com/altaga/NFT-on-Demand/main/Images/diagram2.png">
+
+## Contract:
+
+The contract that is displayed each time you want to upload an NFT to our platform is the following.
+
+    // SPDX-License-Identifier: MIT
+
+    pragma solidity ^0.8.4;
+
+    import 'https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/token/ERC721/ERC721.sol';
+    import 'https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/token/ERC721/extensions/ERC721URIStorage.sol';
+
+    contract MyToken is ERC721URIStorage {
+        
+        address public owner;
+        address public actualAddress;
+        uint256 public price;
+        uint256 public actualBid;
+        string public tokenURI;
+        bool public flag = false;
+        address constant public nftOnDemand = 0x2C1DfE385413b61FD4bd9183edE8C0b2168f0170;
+        
+        modifier onlyOwner{
+            require(msg.sender == owner);
+            _; // Close Modifier
+        }
+        
+        constructor() ERC721('NFT', 'MyNFT') {
+            owner = msg.sender;
+        }
+        
+        function mintNFT(string memory _tokenURI, uint256 _price) public onlyOwner returns (uint256)
+        {
+            tokenURI = _tokenURI;
+            _mint(owner, 1);
+            _setTokenURI(1, tokenURI);
+            price = _price;
+            flag = true;
+            return 1;
+        }
+        
+        function bidUp() public payable {
+            require(msg.value > actualBid);
+            require(msg.value > price);
+            require(flag == true);
+            if(actualBid>0){
+            payable(actualAddress).transfer(actualBid);  
+            }
+            actualAddress = msg.sender;
+            actualBid = msg.value;
+            price = msg.value;
+        }
+        
+        function changePrice(uint256 _price) public onlyOwner {
+            require(0 == actualBid);
+            price = _price;
+        }
+        
+        function activate() public onlyOwner{
+            flag = true;
+        }
+        
+        function finish() public onlyOwner payable {
+            _transfer(owner, actualAddress, 1);
+            actualBid = 0;
+            flag = false;
+            payable(nftOnDemand).transfer(address(this).balance/50);
+            payable(owner).transfer(address(this).balance); // send the ETH to the seller
+            owner = actualAddress;
+        }
+    }
+    
+    # References
+    
+    https://www.businessofapps.com/data/twitch-statistics/
+ 
