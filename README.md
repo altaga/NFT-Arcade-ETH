@@ -95,7 +95,7 @@ First, we must deploy the NFT contract, this contract handles the bids, NFT tran
 
 <img src="https://i.ibb.co/YhLNRVZ/image.png">
 
-Once the contract is displayed on the Polygon network, aparecera el NFT File creator, donde podras seleccionar el creador y el stream del cual deseas obtener el clip, una vez seleccionado, seleccionaras la duracion y prosionaras el boton de descargar.
+Once the contract is displayed on the Polygon network, the NFT File creator will appear. Here you can select the creator and the stream from which you want to obtain the clip, once selected, you will select the duration and press the download button.
 
 These videos are downloaded directly from the Livepeer service.
 
