@@ -51,6 +51,10 @@ Enter NFT Arcade, an NFT marketplace where streamers, creators and gamers can ea
 
 <img src="https://i.ibb.co/3YKwHVK/main-drawio.png">
  
+Para todas las interaccióes con la Blockchain utilizamos la RPC de Moralis para poder conectarse a Polygon.
+
+      ​const​ ​dataweb3​ ​=​ ​new​ ​Web3​(​"https://speedy-nodes-nyc.moralis.io/9bf061a781e6175f3e78d615/polygon/mumbai"​)​;
+
 Our NFT Arcade page is already operational and ONLINE. It has all the basic functions of any NFT marketplace or Streaming platform but of course, based around those gaming moments, pumped by moralis RPC.
 
 <img src="https://i.ibb.co/4ppjHqT/image.png">
