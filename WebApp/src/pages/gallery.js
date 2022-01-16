@@ -3,74 +3,35 @@ import { Component } from 'react';
 import autoBind from 'react-autobind';
 import Header from '../components/header';
 import { abi } from '../contracts/nftContract';
-import { Button, Card, CardBody, CardImg, CardSubtitle, Col, Row } from 'reactstrap';
+import { Button, Card, CardBody, CardImg, CardSubtitle, CardText, CardTitle, Col, Row } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faEthereum } from '@fortawesome/free-brands-svg-icons'
-const { createAlchemyWeb3 } = require("@alch/alchemy-web3");
-const dataweb3 = createAlchemyWeb3("https://eth-ropsten.alchemyapi.io/v2/bKQTjG-gPiywyFe748IzezZI9bH8We7z");
+import maticIcon from '../assets/matic-token.png';
+import usersData from './tools/usersData';
+const Web3 = require('web3')
+const dataweb3 = new Web3("https://speedy-nodes-nyc.moralis.io/9bf061a781e6175f3e78d615/polygon/mumbai");
 
-function sortByArtistA(array) {
-  return array.sort(function (a, b) {
-    if (JSON.parse(a["Data"]).attributes[0].artist > JSON.parse(b["Data"]).attributes[0].artist) {
-      return 1;
-    }
-    if (JSON.parse(a["Data"]).attributes[0].artist < JSON.parse(b["Data"]).attributes[0].artist) {
+function sortByStreamerA(array) {
+  return array.sort((a, b) => {
+    if (a.name < b.name) {
       return -1;
     }
-    // a must be equal to b
+    if (a.name > b.name) {
+      return 1;
+    }
     return 0;
   });
 }
 
-function sortByArtistD(array) {
-  return array.sort(function (a, b) {
-    if (JSON.parse(a["Data"]).attributes[0].artist < JSON.parse(b["Data"]).attributes[0].artist) {
-      return 1;
-    }
-    if (JSON.parse(a["Data"]).attributes[0].artist > JSON.parse(b["Data"]).attributes[0].artist) {
+function sortByStreamerD(array) {
+  return array.sort((a, b) => {
+    if (a.name > b.name) {
       return -1;
     }
-    // a must be equal to b
+    if (a.name < b.name) {
+      return 1;
+    }
     return 0;
   });
-}
-
-function sortArraysA(arrays, comparator = (a, b) => (a < b) ? -1 : (a > b) ? 1 : 0) {
-  let arrayKeys = Object.keys(arrays);
-  let sortableArray = Object.values(arrays)[0];
-  let indexes = Object.keys(sortableArray);
-  let sortedIndexes = indexes.sort((a, b) => comparator(sortableArray[a], sortableArray[b]));
-
-  let sortByIndexes = (array, sortedIndexes) => sortedIndexes.map(sortedIndex => array[sortedIndex]);
-
-  if (Array.isArray(arrays)) {
-    return arrayKeys.map(arrayIndex => sortByIndexes(arrays[arrayIndex], sortedIndexes));
-  } else {
-    let sortedArrays = {};
-    arrayKeys.forEach((arrayKey) => {
-      sortedArrays[arrayKey] = sortByIndexes(arrays[arrayKey], sortedIndexes);
-    });
-    return sortedArrays;
-  }
-}
-
-function sortArraysD(arrays, comparator = (a, b) => (a > b) ? -1 : (a < b) ? 1 : 0) {
-  let arrayKeys = Object.keys(arrays);
-  let sortableArray = Object.values(arrays)[0];
-  let indexes = Object.keys(sortableArray);
-  let sortedIndexes = indexes.sort((a, b) => comparator(sortableArray[a], sortableArray[b]));
-
-  let sortByIndexes = (array, sortedIndexes) => sortedIndexes.map(sortedIndex => array[sortedIndex]);
-
-  if (Array.isArray(arrays)) {
-    return arrayKeys.map(arrayIndex => sortByIndexes(arrays[arrayIndex], sortedIndexes));
-  } else {
-    let sortedArrays = {};
-    arrayKeys.forEach((arrayKey) => {
-      sortedArrays[arrayKey] = sortByIndexes(arrays[arrayKey], sortedIndexes);
-    });
-    return sortedArrays;
-  }
 }
 
 function parse(array) {
@@ -84,6 +45,24 @@ function parse(array) {
   }
 }
 
+function getUserData(username) {
+  for (let i = 0; i < usersData.length; i++) {
+    if (usersData[i].name === username) {
+      return usersData[i];
+    }
+  }
+}
+
+const requestOptions = {
+  method: 'GET',
+  redirect: 'follow'
+};
+
+async function checkLive(streamURL) {
+  let response = await fetch(streamURL, requestOptions);
+  return response.status === 200 ? true : false;
+}
+
 class Gallery extends Component {
   constructor(props) {
     super(props);
@@ -92,57 +71,33 @@ class Gallery extends Component {
       artist: {},
       prices: [],
       status: [],
+      streamers: [],
+      live: []
     }
     autoBind(this);
     this.unirest = require('unirest');
   }
 
   async componentDidMount() {
-    this.unirest('GET', 'https://gp1x01febi.execute-api.us-east-1.amazonaws.com/arcade-FullDB')
-      .end((res) => {
+    let _this = this;
+    this.unirest('GET', 'https://XXXXXXXXX.execute-api.us-east-1.amazonaws.com/livepeer-get-streamers')
+      .end(function (res) {
         if (res.error) throw new Error(res.error);
-        if (res.body.length > 0) {
-          let temp = this.state.artist;
-          let temp2 = res.body;
-          let temp3 = []
-          for (let i = 0; i < res.body.length; i++) {
-            if (temp[res.body[i]["PubKey"]] === undefined) {
-              temp[res.body[i]["PubKey"]] = 0;
-            }
-            else {
-              temp[res.body[i]["PubKey"]]++;
-            }
-            temp2[i]["Counter"] = temp[res.body[i]["PubKey"]]
-            temp3.push("0")
-          }
-          this.setState({
-            elements: temp2,
-            prices: temp3
-          }, () => {
-            for (let i = 0; i < this.state.elements.length; i++) {
-              this.updatePrice(this.state.elements[i]["Contract"], i)
-            }
+        let myjson = JSON.parse(res.body);
+        let temp = myjson.map(x => getUserData(x.name))
+        _this.setState({
+          streamers: temp
+        });
+        temp.map((x, index) => {
+          checkLive(x.streamURL).then(live => {
+            let temp2 = _this.state.live;
+            temp2[index] = live;
+            _this.setState({
+              live: temp2
+            });
           });
-        }
+        })
       });
-  }
-
-  updatePrice(contract, id) {
-    const mint_contract = new dataweb3.eth.Contract(abi(), contract);
-    mint_contract.methods.flag().call().then(status => {
-      let temp = this.state.status;
-      temp[id] = status;
-      this.setState({
-        status: temp
-      });
-    });
-    mint_contract.methods.price().call().then(price => {
-      let temp = this.state.prices;
-      temp[id] = parseFloat(dataweb3.utils.fromWei(price, 'ether'));
-      this.setState({
-        prices: temp
-      });
-    });
   }
 
   render() {
@@ -152,62 +107,28 @@ class Gallery extends Component {
         <div className="body-style2" id="body-style" style={{ overflowX: "hidden" }}>
           <Row style={{ paddingLeft: "1vw", paddingTop: "1vh" }}>
             <Col xs="3" style={{ fontSize: "1.5rem", position: "fixed", paddingTop: "5.5px" }}>
-              <Card style={{ backgroundColor: "#00cae0" }}>
-                <div id="price-div" onClick={() => {
-                  document.getElementById("price-div2").hidden = !document.getElementById("price-div2").hidden;
-                }}>
-                  Price
-                  <br />
-                </div>
-                <div id="price-div2">
-                  <div>
-                    <div style={{ paddingTop: "1vh", paddingBottom: "1vh" }}>
-                      <Button style={{ width: "200px", borderRadius: "25px", fontSize: "1.3rem", background: ` #d209c3` }} onClick={() => {
-                        let temp1 = this.state.elements;
-                        let temp2 = this.state.prices;
-                        let temp3 = sortArraysA([temp2, temp1]);
-                        this.setState({
-                          elements: temp3[1],
-                          prices: temp3[0]
-                        });
-                      }}>
-                        Low to High
-                      </Button>
-                    </div>
-                    <div style={{ paddingTop: "1vh", paddingBottom: "2vh" }}>
-                      <Button style={{ width: "200px", borderRadius: "25px", fontSize: "1.3rem", background: ` #d209c3` }} onClick={() => {
-                        let temp1 = this.state.elements;
-                        let temp2 = this.state.prices;
-                        let temp3 = sortArraysD([temp2, temp1]);
-                        this.setState({
-                          elements: temp3[1],
-                          prices: temp3[0]
-                        });
-                      }}>
-                        High to Low
-                      </Button>
-                    </div>
-                  </div>
-                  <br />
-                </div>
-              </Card>
-              <br />
-              <Card style={{ backgroundColor: "#00cae0" }}>
+              <Card style={{ backgroundColor: "#00c6c6" }}>
                 <div id="artist-div" onClick={() => {
                   document.getElementById("artist-div2").hidden = !document.getElementById("artist-div2").hidden;
                 }}>
-                  Artist
+                  Streamer
                   <br />
                 </div>
                 <div id="artist-div2">
                   <div style={{ paddingTop: "1vh", paddingBottom: "1vh" }}>
                     <Button style={{ width: "200px", borderRadius: "25px", fontSize: "1.3rem", background: ` #d209c3` }} onClick={() => {
                       this.setState({
-                        elements: sortByArtistA(this.state.elements)
+                        streamers: sortByStreamerA(this.state.streamers)
                       }, () => {
-                        for (let i = 0; i < this.state.elements.length; i++) {
-                          this.updatePrice(this.state.elements[i]["Contract"], i)
-                        }
+                        this.state.streamers.map((x, index) => {
+                          checkLive(x.streamURL).then(live => {
+                            let temp2 = this.state.live;
+                            temp2[index] = live;
+                            this.setState({
+                              live: temp2
+                            });
+                          });
+                        })
                       });
                     }}>
                       A to Z
@@ -216,11 +137,17 @@ class Gallery extends Component {
                   <div style={{ paddingTop: "1vh", paddingBottom: "2vh" }}>
                     <Button style={{ width: "200px", borderRadius: "25px", fontSize: "1.3rem", background: ` #d209c3` }} onClick={() => {
                       this.setState({
-                        elements: sortByArtistD(this.state.elements)
+                        streamers: sortByStreamerD(this.state.streamers)
                       }, () => {
-                        for (let i = 0; i < this.state.elements.length; i++) {
-                          this.updatePrice(this.state.elements[i]["Contract"], i)
-                        }
+                        this.state.streamers.map((x, index) => {
+                          checkLive(x.streamURL).then(live => {
+                            let temp2 = this.state.live;
+                            temp2[index] = live;
+                            this.setState({
+                              live: temp2
+                            });
+                          });
+                        })
                       });
                     }}>
                       Z to A
@@ -232,50 +159,35 @@ class Gallery extends Component {
             <Col style={{ paddingLeft: "25vw" }}>
               <Row>
                 {
-                  this.state.elements.map((element, index) => {
+                  this.state.streamers.map((data, index) => {
                     return (
-                      <Card key={index + "element"} style={{ width: "16vw", height: "40vh", margin: "6px", backgroundColor: "#00cae0" }}>
+                      <Card key={index + "element"} style={{ width: "16vw", height: "40vh", margin: "6px", backgroundColor: "#00c6c6" }}>
                         <div style={{ opacity: "100%", textAlign: "center", paddingTop: "10px" }} >
-                          <video width="200px" src={element.Url} />
+                          <img width="150px" height="150px" style={{ borderRadius: "50px", border: "2px rgb(210, 9, 195) solid" }} src={data.logo} />
                         </div>
-                        <CardBody>
-                          <CardSubtitle style={{ paddingBottom: "6px" }} tag="h5" className="mb-2 text-muted">{parse(element.Data)}</CardSubtitle>
-                          <CardSubtitle style={{ paddingBottom: "6px" }} tag="h3" className="mb-2 text-muted">
+                        <CardBody style={{ WebkitTextStroke: "0.2px black" }}>
+                          <CardTitle tag="h5">{data.name}</CardTitle>
+                          <CardSubtitle tag="h3" className="mb-2 text-muted">
                             <div className="flexbox-style" style={{ color: "white" }}>
-                              <div>
-                                {"Price:"}
-                                <>&nbsp;</>
-                              </div>
-                              <div>
-                                {
-                                  this.state.prices[index] === "0" ?
-                                    "....."
-                                    :
-                                    this.state.prices[index]
-                                }
-                              </div>
-                              <>&nbsp;</>
-                              <FontAwesomeIcon icon={faEthereum} />
                               {
-                                !this.state.status[index] &&
-                                <div style={{ color: "red" }}>
-                                  <>&nbsp;</>
-                                  Sold
-                                </div>
+                                this.state.live[index] ?
+                                  <span style={{ color: "green" }}>LIVE</span>
+                                  :
+                                  <span style={{ color: "red" }}>OFFLINE</span>
                               }
                             </div>
                           </CardSubtitle>
-                          <div style={{ fontSize: "1rem" }}>
-                            {JSON.parse(element.Data).attributes[0].game}
-                          </div>
-                          <div style={{ position: "absolute", bottom: "5px" }}>
-                            <Button style={{ width: "200px", borderRadius: "25px", fontSize: "1.3rem", background: ` #d209c3` }} onClick={() => {
-                              window.open(`/nft/${element.PubKey}?id=${element.Counter}`, "_blank");
-                            }}>Open NFT</Button>
+                          <br />
+                          <div className="flexbox-style">
+                            <div style={{ position: "absolute", bottom: "2vh" }}>
+                              <Button style={{ width: "200px", borderRadius: "25px", fontSize: "1.3rem", background: ` #d209c3` }} onClick={() => {
+                                window.open(`/streamer/${data.publicKey}`, "_blank");
+                              }}>Open Channel</Button>
+                            </div>
                           </div>
                         </CardBody>
                       </Card>
-                    );
+                    )
                   })
                 }
               </Row>

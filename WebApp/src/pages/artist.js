@@ -6,10 +6,10 @@ import { Button, Card, CardBody, CardImg, CardSubtitle, CardTitle, Col } from 'r
 import { Grid } from 'react-loading-icons';
 import { abi } from '../contracts/nftContract';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faEthereum } from '@fortawesome/free-brands-svg-icons'
+import maticIcon from '../assets/matic-token.png';
 import { connect } from 'react-redux';
-const { createAlchemyWeb3 } = require("@alch/alchemy-web3");
-const dataweb3 = createAlchemyWeb3("https://eth-ropsten.alchemyapi.io/v2/bKQTjG-gPiywyFe748IzezZI9bH8We7z");
+const Web3 = require('web3')
+const dataweb3 = new Web3("https://speedy-nodes-nyc.moralis.io/9bf061a781e6175f3e78d615/polygon/mumbai");
 
 function stringToLowerCase(str) {
   return str.toLowerCase();
@@ -36,7 +36,7 @@ class Artist extends Component {
   async componentDidMount() {
     const pub = stringToLowerCase(this.props.match.params.pub)
     this.updateData();
-    this.unirest('GET', 'https://gp1x01febi.execute-api.us-east-1.amazonaws.com/getDB')
+    this.unirest('GET', 'https://XXXXXXXXX.execute-api.us-east-1.amazonaws.com/getDB')
       .headers({
         'pubkey': pub
       })
@@ -79,7 +79,7 @@ class Artist extends Component {
 
   updateData() {
     const pub = stringToLowerCase(this.props.match.params.pub)
-    this.unirest('GET', 'https://gp1x01febi.execute-api.us-east-1.amazonaws.com/getExtraData')
+    this.unirest('GET', 'https://XXXXXXXXX.execute-api.us-east-1.amazonaws.com/getExtraData')
       .headers({
         'pubkey': pub,
         'id': 1000000
@@ -132,7 +132,7 @@ class Artist extends Component {
     else {
       temp = "0";
     }
-    this.unirest('GET', 'https://gp1x01febi.execute-api.us-east-1.amazonaws.com/pubExtraDataDB')
+    this.unirest('GET', 'https://XXXXXXXXX.execute-api.us-east-1.amazonaws.com/pubExtraDataDB')
       .headers({
         'pubkey': pub,
         'id': '1000000',
@@ -160,7 +160,7 @@ class Artist extends Component {
                     this.props.my_pubkey.pubkey === this.props.match.params.pub &&
                     <Button disabled={!this.state.buttonDisabled} style={{ width: "16vw", borderRadius: "10px", fontSize: "1.5rem", background: ` #d209c3` }} onClick={this.toogleStateOrders}>{this.state.LabelOrder}</Button>
                   }
-                  <Button style={{ marginLeft: "10px", width: "16vw", borderRadius: "10px", fontSize: "1.5rem", background: ` #d209c3` }} onClick={() => window.open(`https://ropsten.etherscan.io/address/${this.props.match.params.pub}`, "_blank")}> View on Etherscan</Button>
+                  <Button style={{ marginLeft: "10px", width: "16vw", borderRadius: "10px", fontSize: "1.5rem", background: ` #d209c3` }} onClick={() => window.open(`https://mumbai.polygonscan.com/address/${this.props.match.params.pub}`, "_blank")}> View on Etherscan</Button>
                 </Col>
                 {
                   this.props.my_pubkey.pubkey === this.props.match.params.pub &&
@@ -201,7 +201,7 @@ class Artist extends Component {
                                     }
                                   </div>
                                   <>&nbsp;</>
-                                  <FontAwesomeIcon icon={faEthereum} />
+                                  <img src={maticIcon} style={{width:"24px", border:"1px solid black"}} />
                                   {
                                     !this.state.status[index] &&
                                     <div style={{ color: "red" }}>

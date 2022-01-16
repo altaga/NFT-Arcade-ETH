@@ -66,8 +66,8 @@ class Header extends Component {
                         */
                     }
                     <Col style={{ paddingTop: "8px" }}>
-                        <a className="nostyle" href="/marketplace">
-                            Marketplace
+                        <a className="nostyle" href="/streamers">
+                            Streamers
                         </a>
                     </Col>
                     {

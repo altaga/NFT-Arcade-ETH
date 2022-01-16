@@ -5,7 +5,30 @@ import { connect } from 'react-redux'
 import { set_activetab_action } from '../redux/actions/syncActions/setActiveTabaction';
 import { set_nft_action } from '../redux/actions/syncActions/setNFTaction';
 import { set_ipfslink_action } from "../redux/actions/syncActions/updateIPFSaction"
+import { abi } from '../contracts/nftContract';
 import autoBind from 'react-autobind';
+import usersData from '../pages/tools/usersData';
+const Web3 = require('web3')
+
+const streamers = {
+  'Disguise Taco': '0x2E7EE23c25f550924f0EEA127CaBdaE791fA555e',
+  'Auron Pause': '0xa76Dcef44C91233b93F718ad105122F19f0A5fa3',
+  'Flawler': '0x05A3451c48422DEa29Ab913F69268904AF27E4e2',
+  'CartonPotato': '0xFF8F5406C9494883182059Baa6a2C5989fF81d48',
+  'Thiago one': '0x2aBd020136933378F70b11DC68Eb032Bb2ebBbf0',
+  'Morenus': '0x0eDF6A0593F168C633E097d8D98F9E284e02B5Da',
+  'Pokimanolo': '0x57De467d5019C2eDDF415052fDe0ee5f37D56f54',
+  'Samurai': '0xA8c35efb8E8a99d9D3931C5F191fFFD927e90A32',
+  'Solo Manco Only': '0x1C00a9FEbBf6fF5aa2c16E91a4D57917147Bb626',
+}
+
+function getUserData(publicKey) {
+  for (let i = 0; i < usersData.length; i++) {
+    if (usersData[i].publicKey === publicKey) {
+      return usersData[i];
+    }
+  }
+}
 
 class SimpleReactFileUpload extends React.Component {
 
@@ -14,23 +37,27 @@ class SimpleReactFileUpload extends React.Component {
     this.state = {
       file: null,
       description: 'Example Description',
-      external_url: 'https://main.d3cj520d113l13.amplifyapp.com/',
+      external_url: 'https://main.d3h8pyav6x8msw.amplifyapp.com/',
       name: ' Example NFT',
       game: `Example Game`,
-      players: `Example Players`,
-      year: `Example Year`,
-      teams: `Exmaple Teams`,
+      streamList: [],
     }
     autoBind(this);
     this.unirest = require('unirest');
+    this.web3 = new Web3(window.ethereum);
   }
 
   onFormSubmit(e) {
     this.fileUpload(this.state.file).then((response) => {
       console.log(response)
-      this.props.set_activetab_action(4)
-      this.props.set_nft_action(response.data.metadata)
-      this.props.set_ipfslink_action(response.data)
+      const mint_contract = new this.web3.eth.Contract(abi(), this.props.my_contracturl.contracturl, { from: this.props.my_pubkey.pubkey });
+      mint_contract.methods.setStreamer(this.props.streamer).send().on('transactionHash', (hash) => {
+        console.log(hash)
+      }).on('confirmation', () => {
+        this.props.set_activetab_action(5)
+        this.props.set_nft_action(response.data.metadata)
+        this.props.set_ipfslink_action(response.data)
+      })
     })
   }
 
@@ -49,12 +76,12 @@ class SimpleReactFileUpload extends React.Component {
         'name': this.state.name,
         'external_url': this.state.external_url,
         'description': this.state.description.replace('"', "'"),
-        'game':this.state.game,
-        'players':this.state.players,
-        'year':this.state.year,
-        'teams':this.state.teams,
+        'game': this.state.game,
+        'streamer': this.props.streamer,
+        'stream': this.props.stream
       }
     }
+    console.log(config)
     return post(url, formData, config)
   }
 
@@ -79,24 +106,6 @@ class SimpleReactFileUpload extends React.Component {
             <Label for="">Game Name</Label>
             <Input type="text" name="text" placeholder="Mortal Street Fighter X" onChange={(event) => {
               this.setState({ game: event.target.value })
-            }} />
-          </FormGroup>
-          <FormGroup>
-            <Label for="">Year</Label>
-            <Input type="date" name="text" placeholder="03/21/1969" onChange={(event) => {
-              this.setState({ year: event.target.value })
-            }} />
-          </FormGroup>
-          <FormGroup>
-            <Label for="">Teams</Label>
-            <Input type="text" name="text" placeholder="GEN G vs T1" onChange={(event) => {
-              this.setState({ teams: event.target.value })
-            }} />
-          </FormGroup>
-          <FormGroup>
-            <Label for="">Players</Label>
-            <Input type="text" name="text" placeholder="Diago vs Justin" onChange={(event) => {
-              this.setState({ players: event.target.value })
             }} />
           </FormGroup>
           <FormGroup>
@@ -131,4 +140,11 @@ const mapDispatchToProps =
   set_ipfslink_action
 }
 
-export default connect(null, mapDispatchToProps)(SimpleReactFileUpload);
+const mapStateToProps = (state) => {
+  return {
+    my_pubkey: state.my_pubkey,
+    my_contracturl: state.my_contracturl,
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(SimpleReactFileUpload);

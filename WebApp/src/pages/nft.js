@@ -9,12 +9,26 @@ import { Grid } from 'react-loading-icons';
 import { set_pubkey_action } from "../redux/actions/syncActions/updatePublicKeyaction"
 import { connect } from 'react-redux';
 import { abi } from '../contracts/nftContract';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faEthereum } from '@fortawesome/free-brands-svg-icons'
+import maticToken from '../assets/matic-token.png';
 import logoETH from '../assets/logo-ether.png'
-import Web3 from 'web3';
-const { createAlchemyWeb3 } = require("@alch/alchemy-web3");
-const dataweb3 = createAlchemyWeb3("https://eth-ropsten.alchemyapi.io/v2/bKQTjG-gPiywyFe748IzezZI9bH8We7z");
+import usersData from './tools/usersData';
+import auth from '../assets/auth.png';
+
+const Web3 = require('web3')
+const dataweb3 = new Web3("https://speedy-nodes-nyc.moralis.io/9bf061a781e6175f3e78d615/polygon/mumbai");
+
+
+function stringToLower(str) {
+    return str.toLowerCase();
+}
+
+function getUserData(publicKey) {
+    for (let i = 0; i < usersData.length; i++) {
+        if (usersData[i].publicKey === publicKey) {
+            return usersData[i];
+        }
+    }
+}
 
 class Nft extends Component {
     constructor(props) {
@@ -32,17 +46,22 @@ class Nft extends Component {
             status: true,
             image_url: "",
             youtube: "",
-            long: ""
+            long: "",
+            streamerAddress: "",
+            flag2: false,
+            flag3: false,
+            times: ""
         }
         autoBind(this);
         this.unirest = require('unirest');
+        this.data = getUserData(this.props.match.params.pub);
         this.web3 = new Web3(window.ethereum);
         this.url_params = new URLSearchParams(this.props.location.search)
     }
 
     async componentDidMount() {
         const pub = this.props.match.params.pub;
-        this.unirest('GET', 'https://gp1x01febi.execute-api.us-east-1.amazonaws.com/arcade-GetDB')
+        this.unirest('GET', 'https://XXXXXXXXX.execute-api.us-east-1.amazonaws.com/arcade-GetDB')
             .headers({
                 'pubkey': pub
             })
@@ -52,8 +71,10 @@ class Nft extends Component {
                     let temp = JSON.parse(res.body[this.url_params.get('id')].Data);
                     temp["awsimage"] = res.body[this.url_params.get('id')].Url;
                     const mint_contract = new dataweb3.eth.Contract(abi(), res.body[this.url_params.get('id')].Contract);
+
                     this.setState({
                         data: temp,
+                        times: new Date(res.body[this.url_params.get('id')].Time * 1000).toLocaleString(),
                         extra_info: res.body[this.url_params.get('id')],
                         contract: res.body[this.url_params.get('id')].Contract
                     });
@@ -68,17 +89,30 @@ class Nft extends Component {
                             status: status
                         });
                     });
+                    mint_contract.methods.flag2().call().then(status => {
+                        this.setState({
+                            flag2: status
+                        });
+                    });
+                    mint_contract.methods.flag3().call().then(status => {
+                        this.setState({
+                            flag3: status
+                        });
+                    });
                     mint_contract.methods.actualAddress().call().then(actualAddress => {
                         this.setState({
                             actualAddress: actualAddress
                         });
                     });
-                }
-                else {
-
+                    mint_contract.methods.streamer().call().then(streamerAddress => {
+                        console.log(streamerAddress);
+                        this.setState({
+                            streamerAddress: streamerAddress
+                        });
+                    });
                 }
             });
-        this.unirest('GET', 'https://gp1x01febi.execute-api.us-east-1.amazonaws.com/arcadeGetExtraData')
+        this.unirest('GET', 'https://XXXXXXXXX.execute-api.us-east-1.amazonaws.com/arcadeGetExtraData')
             .headers({
                 'pubkey': pub,
                 'id': this.url_params.get('id')
@@ -126,7 +160,7 @@ class Nft extends Component {
     }
 
     updateDB() {
-        this.unirest('GET', 'https://gp1x01febi.execute-api.us-east-1.amazonaws.com/arcadePubExtraDataDB')
+        this.unirest('GET', 'https://XXXXXXXXX.execute-api.us-east-1.amazonaws.com/arcadePubExtraDataDB')
             .headers({
                 'image': this.state.image_url,
                 'long': this.state.long,
@@ -138,6 +172,17 @@ class Nft extends Component {
                 if (res.error) throw new Error(res.error);
                 window.location.reload();
             });
+    }
+
+    authorize() {
+        const mint_contract = new this.web3.eth.Contract(abi(), this.state.contract, { from: this.props.my_pubkey.pubkey });
+        mint_contract.methods.authorize().send().on('transactionHash', (hash) => {
+            console.log(hash)
+        }).on('confirmation', () => {
+            this.setState({
+            flag3: true
+        });
+        })
     }
 
     render() {
@@ -152,6 +197,18 @@ class Nft extends Component {
                                     <Col xs={5}>
                                         <div style={{ opacity: "100%", textAlign: "center", paddingTop: "10vh" }} >
                                             <video width="80%" src={`${this.state.data["awsimage"]}`} controls />
+                                        </div>
+                                        <div>
+                                            {
+                                                (stringToLower(this.state.streamerAddress) === stringToLower(this.props.my_pubkey.pubkey) && !this.state.flag3) &&
+                                                <Button style={{ width: "50%", height: "100%", borderRadius: "25px", fontSize: "1.5rem", background: ` #d209c3` }} onClick={() => this.authorize()}>
+                                                    Authorize
+                                                </Button>
+                                            }
+                                            {
+                                                this.state.flag3 &&
+                                                <img src={auth} width={window.innerWidth * .2} />
+                                            }
                                         </div>
                                     </Col>
                                     <Col xs={7}>
@@ -170,31 +227,29 @@ class Nft extends Component {
                                                 <p style={{ fontWeight: "normal", fontSize: "1.2rem" }}>
                                                     {this.state.data.description}
                                                 </p>
-                                                <Row style={{paddingTop:"5vh"}}>
+                                                <Row md={2} style={{ paddingTop: "5vh", textAlign: "center" }}>
                                                     <Col>
                                                         <div style={{ fontWeight: "bold", fontSize: "1.2rem" }}>
-                                                            Players: {this.state.data.attributes[0].players}
+                                                            Streamer: {this.data["name"]}
                                                         </div>
                                                     </Col>
                                                     <Col>
                                                         <div style={{ fontWeight: "bold", fontSize: "1.2rem" }}>
-                                                            Year: {this.state.data.attributes[0].year}
-                                                        </div>
-                                                    </Col>
-                                                    <Col>
-                                                        <div style={{ fontWeight: "bold", fontSize: "1.2rem" }}>
-                                                            Team: {this.state.data.attributes[0].teams}
+                                                            Mint Date: {
+                                                                this.state.times !== "" &&
+                                                                this.state.times
+                                                            }
                                                         </div>
                                                     </Col>
                                                 </Row>
                                             </div>
                                         </div>
                                         <br />
-                                        
+
                                         <div style={{ marginTop: "5vh", marginBottom: "2vh" }} className="myhr2" />
                                         <Row>
                                             <Col>
-                                                <Card style={{ fontSize: "2rem", background: "#00cae0" }}>
+                                                <Card style={{ fontSize: "2rem", background: "#00c6c6" }}>
                                                     {
                                                         (this.state.actualAddress && this.state.actualAddress !== "0x0000000000000000000000000000000000000000") ?
                                                             <Row>
@@ -203,11 +258,11 @@ class Nft extends Component {
                                                                         <>
                                                                             <Col>
                                                                                 {`Sold by: ${dataweb3.utils.fromWei(this.state.price, "ether")} `}
-                                                                                <FontAwesomeIcon icon={faEthereum} />
+                                                                                <img src={maticToken} style={{ width: "30px" }} />
                                                                             </Col>
                                                                             <Col style={{ fontSize: "1.2rem" }}>
                                                                                 {`Sold to:`}
-                                                                                <a href={`https://ropsten.etherscan.io/address/${this.state.actualAddress}`} target="_blank" rel="noopener noreferrer">
+                                                                                <a href={`https://mumbai.polygonscan.com/address/${this.state.actualAddress}`} target="_blank" rel="noopener noreferrer">
                                                                                     <div>
                                                                                         {`${this.state.actualAddress.substring(0, 21)}`}
                                                                                     </div>
@@ -221,11 +276,11 @@ class Nft extends Component {
                                                                         <>
                                                                             <Col>
                                                                                 {`Last Bid: ${dataweb3.utils.fromWei(this.state.price, "ether")} `}
-                                                                                <FontAwesomeIcon icon={faEthereum} />
+                                                                                <img src={maticToken} style={{ width: "30px" }} />
                                                                             </Col>
                                                                             <Col style={{ fontSize: "1.2rem" }}>
                                                                                 {`Bid from:`}
-                                                                                <a href={`https://ropsten.etherscan.io/address/${this.state.actualAddress}`} target="_blank" rel="noopener noreferrer">
+                                                                                <a href={`https://mumbai.polygonscan.com/address/${this.state.actualAddress}`} target="_blank" rel="noopener noreferrer">
                                                                                     <div>
                                                                                         {`${this.state.actualAddress.substring(0, 21)}`}
                                                                                     </div>
@@ -240,11 +295,11 @@ class Nft extends Component {
                                                             <Row>
                                                                 <Col>
                                                                     {`Min Bid: ${dataweb3.utils.fromWei(this.state.price, "ether")} `}
-                                                                    <FontAwesomeIcon icon={faEthereum} />
+                                                                    <img src={maticToken} style={{ width: "30px" }} />
                                                                 </Col>
                                                                 <Col style={{ fontSize: "1.2rem" }}>
                                                                     {`Mint from:`}
-                                                                    <a href={`https://ropsten.etherscan.io/address/${this.props.match.params.pub}`} target="_blank" rel="noopener noreferrer">
+                                                                    <a href={`https://mumbai.polygonscan.com/address/${this.props.match.params.pub}`} target="_blank" rel="noopener noreferrer">
                                                                         <div>
                                                                             {`${this.props.match.params.pub.substring(0, 21)}`}
                                                                         </div>
@@ -300,7 +355,7 @@ class Nft extends Component {
                                                                 <>
                                                                     {
                                                                         this.state.status ?
-                                                                            <Row style={{paddingRight:"50px", paddingTop:"20px"}}>
+                                                                            <Row style={{ paddingRight: "50px", paddingTop: "20px" }}>
                                                                                 <Col>
                                                                                     <div className="flexbox-style">
                                                                                         <Input type="number" value={dataweb3.utils.fromWei(this.state.bid, "ether")} onChange={(event) => {
@@ -325,7 +380,7 @@ class Nft extends Component {
                                                                                         <div>
                                                                                             &nbsp;
                                                                                         </div>
-                                                                                        <FontAwesomeIcon icon={faEthereum} />
+                                                                                        <img src={maticToken} style={{ width: "30px" }} />
                                                                                     </div>
                                                                                 </Col>
                                                                                 <Col>

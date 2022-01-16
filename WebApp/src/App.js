@@ -17,12 +17,13 @@ import Main from "./pages/main";
 import history from "./utils/history";
 import Upload from "./pages/upload";
 import Nft from "./pages/nft";
+import Streamer from "./pages/streamer";
 import Artist from "./pages/artist";
 import Gallery from "./pages/gallery";
-import Order from "./pages/order";
 import Privacy from "./pages/privacy";
 import Terms from "./pages/terms";
 import OrderRev from "./pages/order-review";
+import Session from "./pages/session";
 
 class App extends Component {
   render() {
@@ -31,9 +32,10 @@ class App extends Component {
         <Router history={history}>
           <Switch>
             <Route exact path="/" component={Main} />
-            <Route exact path="/order" component={Order} />
             <Route exact path="/upload" component={Upload} />
-            <Route exact path="/marketplace" component={Gallery} />
+            <Route exact path="/streamers" component={Gallery} />
+            <Route exact path="/streamer/:pub" component={Streamer} />
+            <Route exact path="/session/:pub" component={Session} />
             <Route exact path="/nft/:pub" component={Nft} />
             <Route exact path="/artist/:pub" component={Artist} />
             <Route exact path="/privacy" component={Privacy} />

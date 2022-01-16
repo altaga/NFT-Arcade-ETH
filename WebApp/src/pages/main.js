@@ -7,10 +7,21 @@ import Header from '../components/header';
 import { Button, Card, CardBody, CardImg, CardSubtitle, CardText, CardTitle, Col, Input, ListGroup, ListGroupItem, Row } from 'reactstrap';
 import { abi } from '../contracts/nftContract';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faEthereum } from '@fortawesome/free-brands-svg-icons'
+import maticIcon from '../assets/matic-token.png'
 import { FaFileInvoiceDollar, FaImage, FaPalette, FaUpload } from 'react-icons/fa';
-const { createAlchemyWeb3 } = require("@alch/alchemy-web3");
-const dataweb3 = createAlchemyWeb3("https://eth-ropsten.alchemyapi.io/v2/bKQTjG-gPiywyFe748IzezZI9bH8We7z");
+import usersData from './tools/usersData';
+const Web3 = require('web3')
+const dataweb3 = new Web3("https://speedy-nodes-nyc.moralis.io/9bf061a781e6175f3e78d615/polygon/mumbai");
+
+const requestOptions = {
+  method: 'GET',
+  redirect: 'follow'
+};
+
+async function checkLive(streamURL) {
+  let response = await fetch(streamURL, requestOptions);
+  return response.status === 200 ? true : false;
+}
 
 function shuffle(inArray) {
   let tempArray = inArray;
@@ -41,6 +52,14 @@ function searchInJSON(json, searchTerm) {
   return result;
 }
 
+function getUserData(username) {
+  for (let i = 0; i < usersData.length; i++) {
+    if (usersData[i].name === username) {
+      return usersData[i];
+    }
+  }
+}
+
 class Main extends Component {
   constructor(props) {
     super(props);
@@ -52,44 +71,34 @@ class Main extends Component {
       search: "",
       searchElements: [],
       searchResults: [],
+      streamers: [],
+      live: []
     }
     autoBind(this);
     this.unirest = require('unirest');
   }
 
   async componentDidMount() {
-    this.unirest('GET', 'https://gp1x01febi.execute-api.us-east-1.amazonaws.com/arcade-FullDB')
-      .end((res) => {
-        if (res.error) throw new Error(res.error);
-        if (res.body.length > 0) {
-          let temp = this.state.artist;
-          let temp2 = res.body;
-          let temp3 = []
-          let temp4 = []
-          for (let i = 0; i < res.body.length; i++) {
-            if (temp[res.body[i]["PubKey"]] === undefined) {
-              temp[res.body[i]["PubKey"]] = 0;
-            }
-            else {
-              temp[res.body[i]["PubKey"]]++;
-            }
-            temp2[i]["Counter"] = temp[res.body[i]["PubKey"]]
-            temp3.push("0")
-            temp4.push(res.body[i])
-            temp2[i]["index"] = i
-          }
-          this.setState({
-            elements: shuffle(temp2),
-            prices: temp3,
-            searchElements: temp4,
-          }, () => {
-            for (let i = 0; i < res.body.length; i++) {
-              this.updatePrice(res.body[i]["Contract"], i)
-            }
-          });
-        }
+    let _this = this;
+    this.unirest('GET', 'https://XXXXXXXXX.execute-api.us-east-1.amazonaws.com/livepeer-get-streamers')
+    .end(function (res) { 
+      if (res.error) throw new Error(res.error);
+      let temp = JSON.parse(res.body).map(x => getUserData(x.name))
+      _this.setState({
+         streamers: temp
       });
-  }
+      temp.map((x, index) => {
+        console.log(index);
+        checkLive(x.streamURL).then(live => {
+          let temp2 = _this.state.live;
+          temp2[index] = live;
+          _this.setState({
+            live: temp2
+          });
+        });
+      })
+    });
+   }
 
   updatePrice(contract, id) {
     const mint_contract = new dataweb3.eth.Contract(abi(), contract);
@@ -176,46 +185,31 @@ class Main extends Component {
             <div className="myhr2" />
             <div style={{ paddingTop: "4vh" }}>
               <h1>
-                Exclusives from NFT on Demand
+                Exclusives from The Arcade
               </h1>
             </div>
             <br />
             <div className="flexbox-style">
               {
-                this.state.elements.map((item, index) => {
+                this.state.streamers.map((data, index) => {
                   if (index < 3) {
                     return (
                       <div key={"element" + index} style={{ margin: "10px", height: "74vh" }}>
-                        <Card id={"cards" + index} style={{ width: "20vw", height: "74vh", backgroundColor:"#00cae0" }}>
+                        <Card id={"cards" + index} style={{ width: "20vw", height: "74vh", backgroundColor:"#00c6c6" }}>
                           <div style={{ opacity: "100%", textAlign: "center", paddingTop: "10px" }} >
-                            <video width= "250px" src={item.Url} />
+                            <img width= "250px" height="250px" style={{borderRadius:"50px", border:"2px rgb(210, 9, 195) solid"}} src={data.logo} />
                           </div>
                           <br />
                           <CardBody style={{WebkitTextStroke:"0.2px black"}}>
-                            <CardTitle tag="h5">{JSON.parse(item.Data).attributes[0].artist}</CardTitle>
+                            <CardTitle tag="h5">{data.name}</CardTitle>
                             <br />
                             <CardSubtitle tag="h3" className="mb-2 text-muted">
                               <div className="flexbox-style" style={{color:"white"}}>
-                                <div>
-                                  {"Price:"}
-                                  <>&nbsp;</>
-                                </div>
-                                <div>
-                                  {
-                                    this.state.prices[index] === "0" ?
-                                      "....."
-                                      :
-                                      dataweb3.utils.fromWei(this.state.prices[index], 'ether')
-                                  }
-                                </div>
-                                <>&nbsp;</>
-                                <FontAwesomeIcon icon={faEthereum} />
                                 {
-                                  !this.state.status[index] &&
-                                  <div style={{ color: "red" }}>
-                                    <>&nbsp;</>
-                                    Sold
-                                  </div>
+                                  this.state.live[index] ?
+                                  <span style={{color:"green"}}>LIVE</span>
+                                  :
+                                  <span style={{color:"red"}}>OFFLINE</span>
                                 }
                               </div>
                             </CardSubtitle>
@@ -223,9 +217,9 @@ class Main extends Component {
                             <div style={{ overflowY: "hidden", height: "100%", fontSize:"1.3rem" }}>
                               <CardText >
                                 {
-                                  JSON.parse(item.Data).description.length > 150 ?
-                                    JSON.parse(item.Data).description.substring(0, 150) + "..." :
-                                    JSON.parse(item.Data).description
+                                  data.description.length > 150 ?
+                                  data.description.substring(0, 150) + "..." :
+                                  data.description
                                 }
                               </CardText>
                             </div>
@@ -233,8 +227,8 @@ class Main extends Component {
                             <div className="flexbox-style">
                               <div style={{ position: "absolute", bottom: "2vh" }}>
                                 <Button style={{ width: "200px", borderRadius: "25px", fontSize: "1.3rem", background: ` #d209c3` }} onClick={() => {
-                                  window.open(`/nft/${item.PubKey}?id=${item.Counter}`, "_blank");
-                                }}>Open NFT</Button>
+                                  window.open(`/streamer/${data.publicKey}`, "_blank");
+                                }}>Open Channel</Button>
                               </div>
                             </div>
                           </CardBody>

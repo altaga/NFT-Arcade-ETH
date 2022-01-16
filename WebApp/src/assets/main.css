@@ -35,7 +35,7 @@ html , body {
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
-  height: 86.4vh;
+  height: 76vh;
   width: 50vw;
   margin-bottom: -20vh;
 }
@@ -110,7 +110,7 @@ html , body {
   background-color: black;
   color: white;
   padding-top: 12vh;
-  min-height: 100vh;
+  min-height: 110vh;
   width: 100%;
 }
 
@@ -172,13 +172,13 @@ a.nostyle:visited {
   top: 12vh;
   height: 1px; 
   width: 100%;
-  background: linear-gradient(90deg, #d209c3 0%, #00cae0 50%,#d209c3 100%);
+  background: linear-gradient(90deg, #d209c3 0%, #00c6c6 50%,#d209c3 100%);
 }
 
 .myhr2{
   height: 1px; 
   width: 100%;
-  background: linear-gradient(90deg, #d209c3 0%, #00cae0 50%,#d209c3 100%);
+  background: linear-gradient(90deg, #d209c3 0%, #00c6c6 50%,#d209c3 100%);
 }
 
 .filters{
@@ -230,4 +230,23 @@ a.nostyle:visited {
 .fa-gradient4 {
   font-size: 4rem;
   color: #d209c3;
+}
+
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.button {
+  display: block;
+  width: 115px;
+  height: 25px;
+  background: #4E9CAF;
+  padding: 10px;
+  text-align: center;
+  border-radius: 5px;
+  color: white;
+  font-weight: bold;
+  line-height: 25px;
 }

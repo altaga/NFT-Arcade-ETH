@@ -10,9 +10,9 @@ import Header from '../components/header';
 import { abi } from '../contracts/nftContract';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
-import { faEthereum } from '@fortawesome/free-brands-svg-icons'
-const { createAlchemyWeb3 } = require("@alch/alchemy-web3");
-const dataweb3 = createAlchemyWeb3("https://eth-ropsten.alchemyapi.io/v2/bKQTjG-gPiywyFe748IzezZI9bH8We7z");
+import maticIcon from '../assets/matic-token.png'
+const Web3 = require('web3')
+const dataweb3 = new Web3("https://speedy-nodes-nyc.moralis.io/9bf061a781e6175f3e78d615/polygon/mumbai");
 
 const arrAvg = arr => arr.reduce((a, b) => a + b, 0) / arr.length
 
@@ -38,7 +38,7 @@ class Order extends Component {
 
     componentDidUpdate(prevProps, prevState) {
         if (this.props.my_pubkey.pubkey !== "" && JSON.stringify(prevProps.my_pubkey.pubkey) !== JSON.stringify(this.props.my_pubkey.pubkey)) {
-            this.unirest('GET', 'https://gp1x01febi.execute-api.us-east-1.amazonaws.com/getFullDB')
+            this.unirest('GET', 'https://XXXXXXXXX.execute-api.us-east-1.amazonaws.com/getFullDB')
                 .end((res) => {
                     if (res.error) throw new Error(res.error);
                     if (res.body.length > 0) {
@@ -68,7 +68,7 @@ class Order extends Component {
 
     async getOrdersStatus(pub) {
         let temp = this.state.generalOrders
-        this.unirest('GET', 'https://gp1x01febi.execute-api.us-east-1.amazonaws.com/getExtraData')
+        this.unirest('GET', 'https://XXXXXXXXX.execute-api.us-east-1.amazonaws.com/getExtraData')
             .headers({
                 'pubkey': pub,
                 'id': 1000000
@@ -94,7 +94,7 @@ class Order extends Component {
     }
 
     async getOneArtist() {
-        this.unirest('GET', 'https://gp1x01febi.execute-api.us-east-1.amazonaws.com/getDB')
+        this.unirest('GET', 'https://XXXXXXXXX.execute-api.us-east-1.amazonaws.com/getDB')
             .headers({
                 'pubkey': this.state.selectedArtist
             })
@@ -137,7 +137,7 @@ class Order extends Component {
     }
 
     setOrder() {
-        this.unirest('GET', 'https://gp1x01febi.execute-api.us-east-1.amazonaws.com/getExtraData')
+        this.unirest('GET', 'https://XXXXXXXXX.execute-api.us-east-1.amazonaws.com/getExtraData')
             .headers({
                 'pubkey': this.state.selectedArtist,
                 'id': 1000000
@@ -149,7 +149,7 @@ class Order extends Component {
                     "pubkey": this.props.my_pubkey.pubkey,
                     "description": this.state.description
                 })
-                this.unirest('GET', 'https://gp1x01febi.execute-api.us-east-1.amazonaws.com/pubExtraDataDB')
+                this.unirest('GET', 'https://XXXXXXXXX.execute-api.us-east-1.amazonaws.com/pubExtraDataDB')
                     .headers({
                         'pubkey': this.state.selectedArtist,
                         'id': '1000000',
@@ -201,7 +201,7 @@ class Order extends Component {
                                                                         }
                                                                     </div>
                                                                     <>&nbsp;</>
-                                                                    <FontAwesomeIcon icon={faEthereum} />
+                                                                    <img src={maticToken} style={{width:"24px", border:"1px solid black"}} />
                                                                     {
                                                                         !this.state.status[index] &&
                                                                         <div style={{ color: "red" }}>
@@ -253,7 +253,7 @@ class Order extends Component {
                                             <div style={{ textAlign: "center", paddingTop: "10px" }} >
                                                 {arrAvg(this.state.prices)}
                                                 <>&nbsp;</>
-                                                <FontAwesomeIcon icon={faEthereum} />
+                                                <img src={maticToken} style={{width:"24px", border:"1px solid black"}} />
                                             </div>
                                         </Card>
                                         <br />
@@ -302,7 +302,7 @@ class Order extends Component {
                                                                                 }
                                                                             </div>
                                                                             <>&nbsp;</>
-                                                                            <FontAwesomeIcon icon={faEthereum} />
+                                                                            <img src={maticToken} style={{width:"24px", border:"1px solid black"}} />
                                                                             {
                                                                                 !this.state.status[index] &&
                                                                                 <div style={{ color: "red" }}>
