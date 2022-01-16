@@ -1,4 +1,4 @@
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) [<img src="https://img.shields.io/badge/View-Website-blue">](https://www.nft-arcade.online/) [<img src="https://img.shields.io/badge/View-Video-red">](poner video aqui)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) [<img src="https://img.shields.io/badge/View-Website-blue">](https://www.nft-arcade.online/) [<img src="https://img.shields.io/badge/View-Video-red">](https://youtu.be/pnt0hDOkI0k)
 
 # NFT-Arcade
 
@@ -12,7 +12,7 @@ This is our submission for the NFT Hack 2022.
 
 #### Click here to watch our demo video:
 
-[<img src="https://raw.githubusercontent.com/altaga/SCUP-WWAC/master/Images/click-here-button.png" width=200>](aqui va el video)
+[<img src="https://raw.githubusercontent.com/altaga/SCUP-WWAC/master/Images/click-here-button.png" width=200>](https://youtu.be/pnt0hDOkI0k)
 
 ## To test the product follow this link (Over here Tech judges!):
 <a href="https://www.nft-arcade.online/" target="_blank" style="font-size:30px;">
