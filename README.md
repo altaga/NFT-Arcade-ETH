@@ -13,7 +13,7 @@ Welcome to NFT Arcade.
 
 ###  NFT-Arcade is an NFT marketplace where streamers, creators and gamers can easily and quickly upload short videos of their best moments and turn them into NFTs.
 
-This is our submission for the Mars Asia Hackathon 2021.
+This is our submission for the NFT Hack 2022.
 
 #### Click here to watch our demo video:
 
@@ -22,11 +22,13 @@ This is our submission for the Mars Asia Hackathon 2021.
 ## To test the product follow this link (Over here Tech judges!):
 <a href="https://www.nft-arcade.online/" target="_blank" style="font-size:30px;">
 https://www.nft-arcade.online/
- 
-### Use Ropsten TEST net on METAMASK!!!!
+
+### Use Mumbai Polygon TESTnet on METAMASK!!!!
 </a>
 <hr>
- 
+
+## How Add Polygon Network:
+https://docs.polygon.technology/docs/develop/metamask/config-polygon-on-metamask/
  
 # Introduction and inspiration
  
@@ -51,37 +53,66 @@ This is a huge market that has been overlooked by NFT marketplaces...until now.
 # Solution
  
 Enter NFT Arcade, an NFT marketplace where streamers, creators and gamers can easily and quickly upload short videos of their best moments and turn them into NFTs.
+
+<img src="https://i.ibb.co/3YKwHVK/main-drawio.png">
  
-Our NFT Arcade page is already operational and ONLINE. It has all the basic functions of any NFT marketplace but of course, based around those gaming moments.
+Our NFT Arcade page is already operational and ONLINE. It has all the basic functions of any NFT marketplace or Streaming platform but of course, based around those gaming moments, pumped by moralis RPC.
 
-<img src="https://i.ibb.co/rdtWSHD/Screenshot-2021-10-17-214015.png">
+<img src="https://i.ibb.co/4ppjHqT/image.png">
 
-To view the NFTs you don't require an account, however in order to increase the offer to buy the NFTs it is necessary to connect a metamask wallet in order to increase the bid for the NFT.
+To view the streaming's or the NFTs you don't require an account, however in order to increase the offer to buy the NFTs it is necessary to connect a metamask wallet in order to increase the bid for the NFT.
 
-In turn, the NFT and its contract can be viewed on Etherscan.
+In turn, the NFT and its contract can be viewed on Polygon Scan.
 
 Or even follow the Content creator directly on their social networks.
 
-<img src="https://i.ibb.co/ZdwQ0Xm/Screenshot-2021-10-17-214052.png">
+<img src="https://i.ibb.co/7VMbKYj/image.png">
 
-The most important part of the project is for the creator to be able to upload a video moment of their stream or content and quickly make it into an NFT. 
+The most important part of the project is for the viewers or creators to be able to upload a video moment of their stream or content and quickly make it into an NFT. 
+
+# Livepeer:
+
+Todo el servicio de streaming se realizo mediante livepeer.
+
+<img src="https://i.ibb.co/3TmFdyx/livepeer-drawio.png">
+
+## Streamers:
+
+Para realizar el manejo de Streamers, se crearon los perfiles de cada uno de los Streamers dentro de el dashboard de Livepeer, con el cual pudimos prorcionarle a cada Streamer sus claves para realizar sus Streams.
+
+<img src="https://i.ibb.co/X7fKN3Q/image.png">
+
+## Live Streaming:
+
+Gracias a las API de Livepeer nos fue posible obtener si los Streamers estaban haciendo un Live, gracias a esto los viewers podian estan siempre enterados cuando se realiza un live stream.
+
+<img src="https://i.ibb.co/5n5yKDR/image.png">
+
+# Mint Process:
 
 The plan for the future is to be rolling a lot of activities and contests with the content creators and their fans in order to attract more and more people to the platform.
 
-
-Uploading your NFT is as simple as connecting your metamask account and going through the entire process of uploading the file to NFT.storage and mint which happens on the backend. For now we have a cap of 15 seconds for each video gaming moment.
+Uploading your NFT is as simple as connecting your metamask account and going through the entire process of uploading the file to NFT.storage and mint which happens on the backend. For now we have a cap of 10mb for each video gaming moment.
 
 The process of uploading an NFT is as follows.
 
 First, we must deploy the NFT contract, this contract handles the bids, NFT transfer and mint.
 
-Once the contract is displayed on the ETH network, the form will appear to fill in all the NFT data and upload the file.
+<img src="https://i.ibb.co/YhLNRVZ/image.png">
 
-<img src="https://i.ibb.co/N3Q2GgQ/Screenshot-2021-10-17-214118.png">
+Once the contract is displayed on the Polygon network, aparecera el NFT File creator, donde podras seleccionar el creador y el stream del cual deseas obtener el clip, una vez seleccionado, seleccionaras la duracion y prosionaras el boton de descargar.
 
+Estos videos son descargados directamente del servicio de Livepeer.
 
-We do all the NFT storage on IPFS through the services of NFT.storage, thanks to this
-we can adhere to the NFT standards.
+<img src="https://i.ibb.co/8dxyCTC/image.png">
+
+Press continue and the form will appear to fill in all the NFT data and upload the file.
+
+<img src="https://i.ibb.co/4d1k9zK/image.png">
+
+## IPFS:
+
+We do all the NFT storage on IPFS through the services of NFT.storage, thanks to this we can adhere to the NFT standards.
 
 Here is a sample of the metadata of one of our NFTs.
 
@@ -105,7 +136,6 @@ For now this is a PoC of what the final product would be, we will be moving soci
 
 Hopefully you liked the project and please support your Arcade, the NFT Arcade.
 
-
 # Team
 [<img src="https://img.shields.io/badge/Luis%20Eduardo-Arevalo%20Oliver-blue">](https://www.linkedin.com/in/luis-eduardo-arevalo-oliver-989703122/)
 
@@ -119,114 +149,30 @@ Hopefully you liked the project and please support your Arcade, the NFT Arcade.
 ## General Diagram:
 The entire application is differentiated into two types of services where the application obtains its data to function.
 
-<img src="https://i.ibb.co/Qj1dMDZ/arcade.png">
-
-
-## Centralized Services (Cloud Services):
-
-- AWS Amplify: CI/CD, Hosting y SSL en AWS.
-- EC2: Server upload the image to NFT.Storage.
-- API Gateway: Secure communication with NodeJS Server (Upload image to NFT.Storage).
-- DynamoDB: user database
+<img src="https://i.ibb.co/3YKwHVK/main-drawio.png">
 
 ## Decentralized Services (Web3.js and communication with Smart Contracts):
 
-- Alchemy:
-	- Obtaining prices of the NFTs in real time.
-- Metamask:
-	- Deployment of the contract on the ETH Network (Ropsten).
+- Moralis:
+	- Obtaining prices and metadata of the NFTs in real time.
+- Moralis (w/Metamask):
+	- Deployment of the contract on the Polygon Network (Mumbai).
 	- NFT Mint.
 	- Sale of NFTs through Interaction with Smart Contract.
+- Livepeer:
+  - User Management.
+  - Live Streams.
+  - CDN service.
+  - Transcoding.
 - NFT.Storage:
- 	- NFT IPFS storage and metadata.json and YES we are storing the videos on IPFS through NFT.storage.
+  - NFT IPFS storage and metadata.json and YES we are storing the videos on IPFS through NFT.storage.
 
 ## Frameworks:
 
-- NodeJS: 
-	- NFT.Storage Node package: Backend to upload the image to NFT.Storage.
-	- Express: Handling of server api calls.
 - ReactJS: Creation of the page in frontend.
 - Remix IDE: Creation and compilation of the Smart contract.
 
-
-## Minting Process:
-
-As an important part of the platform, this is the algorithm to upload an NFT to our platform, prowered by NFT.storage
-
-<img src="https://raw.githubusercontent.com/altaga/NFT-on-Demand/main/Images/diagram2.png">
-
-## Contract:
-
-The contract that is displayed each time you want to upload an NFT to our platform is the following.
-
-    // SPDX-License-Identifier: MIT
-
-    pragma solidity ^0.8.4;
-
-    import 'https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/token/ERC721/ERC721.sol';
-    import 'https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/token/ERC721/extensions/ERC721URIStorage.sol';
-
-    contract MyToken is ERC721URIStorage {
-        
-        address public owner;
-        address public actualAddress;
-        uint256 public price;
-        uint256 public actualBid;
-        string public tokenURI;
-        bool public flag = false;
-        address constant public nftOnDemand = 0x2C1DfE385413b61FD4bd9183edE8C0b2168f0170;
-        
-        modifier onlyOwner{
-            require(msg.sender == owner);
-            _; // Close Modifier
-        }
-        
-        constructor() ERC721('NFT', 'MyNFT') {
-            owner = msg.sender;
-        }
-        
-        function mintNFT(string memory _tokenURI, uint256 _price) public onlyOwner returns (uint256)
-        {
-            tokenURI = _tokenURI;
-            _mint(owner, 1);
-            _setTokenURI(1, tokenURI);
-            price = _price;
-            flag = true;
-            return 1;
-        }
-        
-        function bidUp() public payable {
-            require(msg.value > actualBid);
-            require(msg.value > price);
-            require(flag == true);
-            if(actualBid>0){
-            payable(actualAddress).transfer(actualBid);  
-            }
-            actualAddress = msg.sender;
-            actualBid = msg.value;
-            price = msg.value;
-        }
-        
-        function changePrice(uint256 _price) public onlyOwner {
-            require(0 == actualBid);
-            price = _price;
-        }
-        
-        function activate() public onlyOwner{
-            flag = true;
-        }
-        
-        function finish() public onlyOwner payable {
-            _transfer(owner, actualAddress, 1);
-            actualBid = 0;
-            flag = false;
-            payable(nftOnDemand).transfer(address(this).balance/50);
-            payable(owner).transfer(address(this).balance); // send the ETH to the seller
-            owner = actualAddress;
-        }
-    }
+# References
     
-    # References
-    
-    https://www.businessofapps.com/data/twitch-statistics/
+https://www.businessofapps.com/data/twitch-statistics/
  
