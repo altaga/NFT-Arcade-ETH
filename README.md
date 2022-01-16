@@ -49,6 +49,10 @@ This is a huge market that has been overlooked by NFT marketplaces...until now.
  
 Enter NFT Arcade, an NFT marketplace where streamers, creators and gamers can easily and quickly upload short videos of their best moments and turn them into NFTs.
 
+For all Blockchain interactions we use the Moralis' RPC to connecto to Polygon on the Mumbai testnet:
+
+      ​const​ ​dataweb3​ ​=​ ​new​ ​Web3​(​"https://speedy-nodes-nyc.moralis.io/9bf061a781e6175f3e78d615/polygon/mumbai"​)​;
+
 <img src="https://i.ibb.co/3YKwHVK/main-drawio.png">
  
 Para todas las interaccióes con la Blockchain utilizamos la RPC de Moralis para poder conectarse a Polygon.
