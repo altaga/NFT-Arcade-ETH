@@ -67,19 +67,19 @@ The most important part of the project is for the viewers or creators to be able
 
 # Livepeer:
 
-Todo el servicio de streaming se realizo mediante livepeer.
+All the streaming service was done through Livepeer.
 
 <img src="https://i.ibb.co/3TmFdyx/livepeer-drawio.png">
 
 ## Streamers:
 
-Para realizar el manejo de Streamers, se crearon los perfiles de cada uno de los Streamers dentro de el dashboard de Livepeer, con el cual pudimos prorcionarle a cada Streamer sus claves para realizar sus Streams.
+To manage Streamers, the profiles of each of the Streamers were created within the Livepeer dashboard, with which we were able to provide each Streamer with their keys to perform their Streams.
 
 <img src="https://i.ibb.co/X7fKN3Q/image.png">
 
 ## Live Streaming:
 
-Gracias a las API de Livepeer nos fue posible obtener si los Streamers estaban haciendo un Live, gracias a esto los viewers podian estan siempre enterados cuando se realiza un live stream.
+Thanks to the Livepeer APIs it was possible for us to obtain if the Streamers were doing a Live, thanks to this the viewers could always be aware when a live stream is made.
 
 <img src="https://i.ibb.co/5n5yKDR/image.png">
 
@@ -97,7 +97,7 @@ First, we must deploy the NFT contract, this contract handles the bids, NFT tran
 
 Once the contract is displayed on the Polygon network, aparecera el NFT File creator, donde podras seleccionar el creador y el stream del cual deseas obtener el clip, una vez seleccionado, seleccionaras la duracion y prosionaras el boton de descargar.
 
-Estos videos son descargados directamente del servicio de Livepeer.
+These videos are downloaded directly from the Livepeer service.
 
 <img src="https://i.ibb.co/8dxyCTC/image.png">
 
