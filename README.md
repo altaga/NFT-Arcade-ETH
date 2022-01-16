@@ -1,10 +1,5 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) [<img src="https://img.shields.io/badge/View-Website-blue">](https://www.nft-arcade.online/) [<img src="https://img.shields.io/badge/View-Video-red">](poner video aqui)
 
-Socials:
-
-falta twitter
-
-
 # NFT-Arcade
 
 <img src="https://i.ibb.co/CJHWhjC/arc3.png" width="400">
