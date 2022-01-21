@@ -117,9 +117,15 @@ You can check on the metadata of each NFT Live, that it is indeed uploaded there
 
 Here is a sample of the metadata of one of our NFTs.
 
-<img src="https://i.ibb.co/L8N92vR/Screenshot-2021-10-17-235619.png">
+<img src="https://i.ibb.co/P9bCz1x/image.png">
 
-<img src="https://i.ibb.co/C8qTzvz/Screenshot-2021-10-17-235634.png">
+<hr/>
+
+<img src="https://i.ibb.co/qyBVvTq/image.png">
+
+<hr/>
+
+<img src="https://i.ibb.co/DwVvpjw/image.png">
 
 In turn, here is the code that we have running on our server to upload the file from the web page and send it to NFT.Storage through an API.
 
