@@ -113,6 +113,8 @@ Press continue and the form will appear to fill in all the NFT data and upload t
 
 We do all the NFT storage on IPFS through the services of NFT.storage, thanks to this we can adhere to the NFT standards.
 
+You can check on the metadata of each NFT Live, that it is indeed uploaded there.
+
 Here is a sample of the metadata of one of our NFTs.
 
 <img src="https://i.ibb.co/L8N92vR/Screenshot-2021-10-17-235619.png">
