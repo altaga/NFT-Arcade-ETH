@@ -7,7 +7,7 @@ const fs = require('fs');
 const https = require('https');
 const fileUpload = require('express-fileupload');
 const publicIp = require('public-ip');
-const { NFTStorage, File } = require('nft.storage');
+const { NFTStorage, File } = require('nft.storage'); // NFT STORAGE MODULE
 const AWS = require('aws-sdk');
 const fsExtra = require('fs-extra')
 const execSync = require('child_process').execSync;
@@ -24,7 +24,7 @@ const s3 = new AWS.S3({
 const PORT = 8080;
 const HOST = '0.0.0.0';
 
-// Tokens
+// NFT STORAGE CREDENTIALS
 
 const API_TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweDQzYjY5NUYzN2NGRDkxODg0NWQ3MTgxQUY5RkEXXXXX"
 const clientnft = new NFTStorage({ token: API_TOKEN })
@@ -134,8 +134,9 @@ app.post('/upload-video-nft-storage', async (req, res) => {
           message: 'No file uploaded'
         });
       } else {
-        //Use the name of the input field (i.e. "avatar") to retrieve the uploaded file
+        // GET THE FILE FROM API REQUEST
         let nft = req.files.nft;
+
         let my_date = Date.now();
         let dateName = my_date + `.${nft.mimetype.substring(6, nft.mimetype.length)}`;
         console.log(dateName);
@@ -146,6 +147,7 @@ app.post('/upload-video-nft-storage', async (req, res) => {
         const file2 = fs.readFileSync(__dirname + '/uploads/' + my_date + '.jpg');
         const realFile1 = new File([file], dateName, { type: `video/${nft.mimetype.substring(6, nft.mimetype.length)}` })
         const realFile2 = new File([file2], my_date + '.jpg', { type: `image/jpg` })
+        // CREATING THE NFT METADATA FORM API REQUEST
         let premetadat = {
           name: `${req.headers.name}`,
           external_url: `${req.headers.external_url}`,
@@ -162,7 +164,9 @@ app.post('/upload-video-nft-storage', async (req, res) => {
             }
           ]
         }
+        // UPLOAD NFT TO NFT STORAGE
         let metadata = await clientnft.store(premetadat)
+  
         const params = {
           Bucket: 'the-arcade-storage', // pass your bucket name
           Key: dateName, // file will be saved as 
